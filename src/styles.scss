@@ -1,4 +1,15 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  margin: 0;
+  padding: 0;
+  margin-top: -0.25rem;
+  overflow: hidden;
+}
+
+.custom-report {
+  height: 100vh !important; /* Força o iframe a ocupar o espaço do contêiner */
+  width: 100% !important;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
