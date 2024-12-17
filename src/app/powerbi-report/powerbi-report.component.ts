@@ -1,34 +1,71 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
-import { PowerBIService } from '../powerbi.service';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import * as models from 'powerbi-models';
+import { PowerBIReportEmbedComponent } from 'powerbi-client-angular';
+import { Report } from 'powerbi-client';
 
 @Component({
   selector: 'app-powerbi-report',
   templateUrl: './powerbi-report.component.html',
   styleUrls: ['./powerbi-report.component.scss'],
 })
-export class PowerbiReportComponent  {
+export class PowerbiReportComponent implements AfterViewInit {
+  @ViewChild(PowerBIReportEmbedComponent)
+  reportObj!: PowerBIReportEmbedComponent;
+  report!: Report;
+  ngAfterViewInit(): void {
+    this.report = this.reportObj.getReport();
+  }
   // Configuração do relatório Power BI
   embedConfig = {
     type: 'report', // Tipo do embed (relatório)
     id: 'fa000586-a94a-4c01-a916-3577dcffe835', // ID do relatório
-    embedUrl: 'https://app.powerbi.com/reportEmbed?reportId=fa000586-a94a-4c01-a916-3577dcffe835', // URL de embed
-    accessToken: 'H4sIAAAAAAAEACWUtw7rWBIF_-WlXIAUrbjABKL3oncZvbeXfrD_vsJMXkGjcKr__mMmdz8l-Z___tFF_N5DVmuRj4sr6EYUb87RArpJQznhBO5iBbra8_gMVrb33bliDSeexug-_TSOzG9MpO1XBgFXWRdBvaOGUNRZQzHRqHCveXSb_yS8BBQSy5ZqgxbyXTUnWAAKa6WRo5T1FOnXW3G6lDbjI_Ukxn6LTTsMKCiRt8vDp35eJYWTbdiFY93t1_ypZBFvIOJbb0Z5yynHa_jHcbJBy6F41-CSSSeof84oTt5gU77sW3hE5JFp_2W2X8wZijNCNMXOptIxQx6c1FlAhwljKk--gyTVKfs9JyvAYXTlpdFmN8BMdzQhKJJgA5AXvvQLZus6R_N6Ld5Wt7i7ecTDcdRkcDi8DZTWeIdJ2DzmrTR1alESwwiAcpqqxxhrZHnvBR-bt-yBxdkBIKFP7Hwvo-H5b0avYjQRM3KyQr-01unJygF3C7lYuDR6FKr1LVzuC-RnqkabE1I7LculT-0CP2kEG6u1BdumcJHrAcn39pWnjFZQGqNJgVha8pwME5MuiiTPRpyaV1Q1nhJXeA9FPGeHXgc5Dto2lr2yw8GGwCIJlmWEZ-pXMWB51ap2ybIdbFaJcz0-6z0L2DAndhOrnRw74UcZpihFFELc5fOT5OVmN5Fj7XnBdeRB0y7kV2keKwjzFuk9gmUciwJJrDr0eKviIKX9V3gB5oOvmPZBbtpzmHj3konEr_GN99GKyfoWPsr1LFcf6lZQy3S7giTwFnd1c-yLuvdaTaIOqRALJaY5PFCqPogSLVjNYcfnmB8opF6sQcxqhb8z8HhmKl-ImeeXFxO0KYl7H8Le6EyPd40kQ2dfppMJngOOq-Po3bMEMPxQpq2NuAsVGQ5tmr_QDROo3_gkUqfnX3_9-c8f9udmm9Ti_mXWgCLbIIhJ_RLnKHUpzJKHaNrzEFpTm0zdNPEj5ZZxKA57Mz3X_9AcBaTRXo9YckXpn3HyHbesZ0J5elFoFrwd097YYrLrmpMaqCSqbG7eDQ-Ai-a523Y1gr-ei32k87YO6RVF16l2L4M2ga_7K6o-h2C3jT1hDSrEVnuOC-B3Afvdf6FrQYQGWSYjE9HJC-rjAXL3zt9PefQ4WbbcY6Qk2R-ybbbWLx_WNeZ2nBHsav0ln8YSsgaBDASnz1rGYCLq9pgHA8VDsA6iLEoQhRYwYfRTUgLauMTkpcP8i4Sji-7hRic0KSfcz2oLkMnpPGYrpW67cq2-U6PFEvOl9d6H__yr-Z7rYpX9n-W7zLyXpKRQMoXuW3xu5_BW6x_ql96YbPta_DCW2gmeXsiQr3SBIeSDT2ql9DBDB20Mo1UQcQO7Krx0BT4WenDcHcLD0YEziW3f-aRE9TZF_L4XTg0yLtIKas_1edTOSfx25-tWTN0r58N1IwuMU2R2fBQUT9Pm0ZIGdKdOqAsrKi89G-nNBcuahStEfi7FqWZ3N-B0PTtvS8-3C5xZ9y1MjZ02eghLDGESRBzMx_2QLtCLtHlPEV_WOK2nb1s4hEo8QjtpjXFCadfRTjb3TEdFGhahBZC1ve2fiOFA7EXRVzEDh6jAs6iVCneTfUGkrSNd2asHmKWF14axNWb2CUHHURCQh_DY1f1SgEM1dBAmQenDTfILQUJULfhUP83_-z8rMFveWgYAAA==.eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLUJSQVpJTC1TT1VUSC1CLVBSSU1BUlktcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJleHAiOjE3MzQ0NDUyNTAsImFsbG93QWNjZXNzT3ZlclB1YmxpY0ludGVybmV0Ijp0cnVlfQ==', // Token de acesso
+    embedUrl:
+      'https://app.powerbi.com/reportEmbed?reportId=fa000586-a94a-4c01-a916-3577dcffe835', // URL de embed
+    accessToken:
+      'H4sIAAAAAAAEAB2Uta7EVgBE_-W1jmSmSCkM17zrNUNnZl5jlH_PS_pp5hzN_P3zSe5-SvKfP39od_y23upa17XN-5CqbjZaZNk56kpR_T4zHH5MN_KiTW0bMl_QomgJZL4J6IY6Dsje0jc70PSb1An1nuSsSaGXT9GGqakDyFahCXJ-l8pOz8iaKPnwU9dpoSv1tJEqKlsMG3E1KNW4XWTnwtek86mgzkxU1kDlZlJSfQqAZi5zlgS4Cf3FhJnX8dPCUx0koNGbzDGDgz1vYBf5eYZ1Oy6RKPiVKCjLsDUxN8kFTnvHG3tou3G8hLO-royhfSgVt4U6BJzo729vOza0M5Bvlm6b575Q-XwBLfaAno8ZaslKseC65RC68eXb51Rf8jbme71-bt9gGUJU2RsyzkwShl7GuoL0dB__UDGTPPIXSFVENJAu6eKxyKK4uUJ3cAY2LfFVJ4P_6GbdRfWDgK2tC25CRbE2eXTCLXyzGrd-U8E6H7cgKZumginPGzZ-F3OVfwP1FFxpT-gWUb8CBuCvJq-BFa1-xhG5D8FZF80TQUeOMi-17tgXIkELw2gSBoia0rrQSyc_xrCyvbH1eHorwD-7-biQ5rOF798JFzowEfYmYyMNEkHwXXZtGPOl9LIsbHVArAFk4iPVnmwZYVpp6KGeia5LWa0IXwrMlnjiTDb7MX2hQD6kuPv0piIbImT9ZiYqwCOBskNJXNrzurcwnH_7o5DS4gfP6e8pbYwye4cneqmPyj7H1fca88J8xjGxdExkokdl5mVXbyv_SGw5dsJcYnTKULR_bYA_RLPQ3ul6IT6yC1KHscTaK-ywFSUBL8BvyTMs94b54lIAvkfQdSylOy8D2XboY8NRFmhdXcKGWD_YSJ4rD9g5pOdyilxSIqYIKn_--BHWe_5OenH_zinMNHE-r8h1eA-eoxk9WbXfu3sXg8hCZGnUq6CkZQ33BUdcHqOOX426gow17OndytqZwoyoFrAuQk8biXvumBnoqyGpwxbDdY9z6Sj6jZJhAIPJm1h2xVbZoQtrJAIkZd02LlLb30NzLxAVSyAzkAGIk7tQEYjm8jiGi_lhgTto2jOn-zLifU9jT3MWYjMyJK5vqJIs9Od6FwXGTYZTWQAvRkKQMLat2SW7FNNL_UGhyVhfOZRPnS6o9UCusYD7qvyjYl53KO73sXe1s-HuLEDEloG23W33hARswBw-ErTQ0H3odCcBTxXLi4nqS6n0hfgcxxOvN5Rn6p1tWxPrdTPWX3_9h_me62JV_V_KKPzGU54FQShW4VpF0rJC3vl_ymmqMfnua_GfjEVL8KeEJMv3nbQ4-rUB-D6vC59gyO75gr_VrOKhK9LBg_eyD0f4iuSbvuQl7N1wdILl0YuGEslJ9TYFL3aO80325SPz5tVQOBx50FQSIjD1RqJNBfXxcgUexxYVmWAvdolM9IFkyf5I2IabFf3azCl_q1KTiP1kT2FlDvPomJfZWmiB2Kwb21RjjDOMdQMF1_wtNJSp-jhndTkHFINUfg_ZIXaccfE0_KC5vZs8Bj6mqGc5aVTRZoApSAGkXl6N7hduDF5j86qCuYmNv2Bx5DUblxiE_Gp-XGZz5niwyr2rupShZIwQ7aMr9l7I4IzJg09bAmJfLdkzlszxyAKPBv6_jH_-BQuXOZpCBgAA.eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLUJSQVpJTC1TT1VUSC1CLVBSSU1BUlktcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJleHAiOjE3MzQ0NjAzNDAsImFsbG93QWNjZXNzT3ZlclB1YmxpY0ludGVybmV0Ijp0cnVlfQ==', // Token de acesso
     tokenType: models.TokenType.Embed, // Tipo do token (Embed)
     settings: {
       panes: {
         filters: { visible: false }, // Esconde filtros
-        pageNavigation: { visible: false } // Esconde navegação entre páginas
+        pageNavigation: { visible: false }, // Esconde navegação entre páginas
       },
-     
-
-    }
+    },
   };
 
   // Manipuladores de evento do Power BI
   eventHandlers = new Map([
-    ['loaded', () => console.log('Power BI Report Loaded')],
+    ['loaded', () => this.onReportLoaded()],
     ['rendered', () => console.log('Power BI Report Rendered')],
-    ['error', (event:any) => console.error('Error: ', event.detail)]
+    ['error', (event: any) => console.error('Error: ', event.detail)],
   ]);
+
+  onReportLoaded() {
+    console.log('Report Loaded');
+    this.report = this.reportObj.getReport(); // Captura o report object
+    this.applyFilters();
+  }
+
+  // Método para aplicar filtros no relatório
+  async applyFilters() {
+    const filter: models.IBasicFilter = {
+      $schema: 'http://powerbi.com/product/schema#basic',
+      filterType: models.FilterType.Basic,
+      target: {
+        table: 'Funcionarios', // Substitua pelo nome da tabela
+        column: 'Nivel4', // Substitua pelo nome da coluna
+      },
+      operator: 'In',
+      values: ['00020C08'], // Valores do filtro
+    };
+
+    try {
+      if (this.report) {
+        // Aplica o filtro no relatório
+        await this.report.updateFilters(models.FiltersOperations.Add, [filter]);
+        console.log('Filtro aplicado com sucesso.');
+      }
+    } catch (error) {
+      console.error('Erro ao aplicar filtro:', error);
+    }
+  }
 }

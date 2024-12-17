@@ -31,6 +31,7 @@ import { Validate_Service } from 'src/services/Validate_Service';
 import { PowerbiReportComponent } from './powerbi-report/powerbi-report.component';
 import { PowerBIEmbedModule } from 'powerbi-client-angular';
 
+
 export const HttpLoaderFactory = (httpClient: HttpClient) =>
   new TranslateHttpLoader(httpClient, 'assets/i18n/');
 
@@ -38,6 +39,7 @@ export const HttpLoaderFactory = (httpClient: HttpClient) =>
   declarations: [
     AppComponent,
     PowerbiReportComponent,
+
 
   ],
   imports: [
