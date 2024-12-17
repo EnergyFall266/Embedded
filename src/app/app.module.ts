@@ -28,6 +28,8 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { AnexoService, PastaService } from './app.service';
 import { Validate_Service } from 'src/services/Validate_Service';
+import { PowerbiReportComponent } from './powerbi-report/powerbi-report.component';
+import { PowerBIEmbedModule } from 'powerbi-client-angular';
 
 export const HttpLoaderFactory = (httpClient: HttpClient) =>
   new TranslateHttpLoader(httpClient, 'assets/i18n/');
@@ -35,7 +37,8 @@ export const HttpLoaderFactory = (httpClient: HttpClient) =>
 @NgModule({
   declarations: [
     AppComponent,
-    
+    PowerbiReportComponent,
+
   ],
   imports: [
     BrowserAnimationsModule,
@@ -61,6 +64,7 @@ export const HttpLoaderFactory = (httpClient: HttpClient) =>
     ProgressSpinnerModule,
     FileUploadModule,
     RadioButtonModule,
+    PowerBIEmbedModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
