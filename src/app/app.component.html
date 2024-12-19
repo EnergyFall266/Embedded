@@ -1,5 +1,10 @@
-<app-powerbi-report></app-powerbi-report>
 
-<!-- <div class="progress-spinner-parent" *ngIf="vp.Buscando_WS">
+<p-toast/>
+<ng-template #content>
+
+  <app-powerbi-report [vp]="vp"></app-powerbi-report>
+</ng-template>
+
+<div class="progress-spinner-parent" *ngIf="vp.Buscando_WS; else content">  >
   <p-progressSpinner class="progress-spinner"></p-progressSpinner>
-</div> -->
+</div>

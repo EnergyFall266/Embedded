@@ -1,4 +1,8 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpClientModule,
+} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -26,22 +30,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FileUploadModule } from 'primeng/fileupload';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { AnexoService, PastaService } from './app.service';
 import { Validate_Service } from 'src/services/Validate_Service';
 import { PowerbiReportComponent } from './powerbi-report/powerbi-report.component';
 import { PowerBIEmbedModule } from 'powerbi-client-angular';
-
+import { PublicClientApplication, InteractionType } from '@azure/msal-browser';
+import {
+  MsalInterceptor,
+  MsalModule,
+  MsalRedirectComponent,
+} from '@azure/msal-angular';
+import { ToastModule } from 'primeng/toast';
 
 export const HttpLoaderFactory = (httpClient: HttpClient) =>
   new TranslateHttpLoader(httpClient, 'assets/i18n/');
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    PowerbiReportComponent,
-
-
-  ],
+  declarations: [AppComponent, PowerbiReportComponent],
   imports: [
     BrowserAnimationsModule,
     HttpClientModule,
@@ -66,16 +70,10 @@ export const HttpLoaderFactory = (httpClient: HttpClient) =>
     ProgressSpinnerModule,
     FileUploadModule,
     RadioButtonModule,
+    ToastModule,
     PowerBIEmbedModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-    }),
   ],
-  providers: [PastaService, Validate_Service, AnexoService],
+  providers: [Validate_Service],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
